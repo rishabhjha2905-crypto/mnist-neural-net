@@ -25,6 +25,7 @@ Input (784) → Hidden Layer 1 (128) → ReLU → Hidden Layer 2 (64) → ReLU �
 - **Optimizer:** Adam (lr=0.001)
 - **Epochs:** 5
 - **Batch size:** 64
+
 | Epoch | Loss |
 |-------|------|
 | 1 | 0.3984 |
