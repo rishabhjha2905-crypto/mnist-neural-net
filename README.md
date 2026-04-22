@@ -4,7 +4,7 @@ An interactive web app powered by a Convolutional Neural Network (CNN) trained i
  
 ## Demo
  
-[Live App on Streamlit](#) ← add your link here after deploying
+[Live App on Streamlit](https://mnist-neural-net-mnist-digit-classifier.streamlit.app/)
  
 ## Overview
  
