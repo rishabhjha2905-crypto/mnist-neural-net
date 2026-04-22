@@ -1,77 +1,83 @@
 # MNIST Handwritten Digit Classifier
  
-A feedforward neural network built from scratch in PyTorch that recognizes handwritten digits (0-9) from the MNIST dataset with 96.67% accuracy.
+An interactive web app powered by a Convolutional Neural Network (CNN) trained in PyTorch that recognizes handwritten digits (0-9) with 99.24% accuracy. Draw a digit on the canvas and the model predicts it in real time.
+ 
+## Demo
+ 
+[Live App on Streamlit](#) ← add your link here after deploying
  
 ## Overview
  
-MNIST is the classic benchmark for neural networks — 60,000 training images and 10,000 test images of handwritten digits, each 28x28 pixels. This project builds a simple 3-layer feedforward network, trains it using backpropagation and the Adam optimizer, and evaluates it on unseen test data.
+This project builds and compares two neural network architectures on the MNIST dataset:
  
-The misclassified images reveal that the network's remaining errors are largely on genuinely ambiguous handwriting — cases where even humans would struggle — indicating the model has learned meaningful digit representations rather than just memorizing patterns.
+1. **Feedforward Neural Network** — a simple 3-layer network that flattens the image into 784 pixels. Achieves 96.67% accuracy.
+2. **Convolutional Neural Network (CNN)** — uses convolutional layers to detect spatial features like edges and curves directly in the image. Achieves 99.24% accuracy.
+The CNN is then deployed as an interactive Streamlit web app where users can draw digits on a canvas and get real-time predictions with confidence scores.
  
 ## Architecture
  
+### CNN (Final Model)
 ```
-Input (784) → Hidden Layer 1 (128) → ReLU → Hidden Layer 2 (64) → ReLU → Output (10)
+Input (1x28x28) → Conv2d(32) → ReLU → MaxPool → Conv2d(64) → ReLU → MaxPool → Flatten → Linear(128) → Dropout(0.25) → Linear(10)
 ```
  
-- **Input layer:** 784 neurons (one per pixel in a 28x28 image)
-- **Hidden layer 1:** 128 neurons with ReLU activation
-- **Hidden layer 2:** 64 neurons with ReLU activation
-- **Output layer:** 10 neurons (one per digit 0-9)
-- **Total parameters:** ~109,000 learnable weights and biases
+### Feedforward Network (Baseline)
+```
+Input (784) → Linear(128) → ReLU → Linear(64) → ReLU → Linear(10)
+```
+ 
+## Results
+ 
+| Model | Test Accuracy |
+|-------|--------------|
+| Feedforward Neural Network | 96.67% |
+| CNN | 99.24% |
+ 
+The CNN's remaining errors are concentrated on genuinely ambiguous handwriting — cases where even humans would struggle — indicating the model has learned meaningful digit representations.
+ 
 ## Training
  
 - **Loss function:** Cross Entropy Loss
 - **Optimizer:** Adam (lr=0.001)
-- **Epochs:** 5
+- **Epochs:** 10 (CNN), 5 (Feedforward)
 - **Batch size:** 64
 
-| Epoch | Loss |
-|-------|------|
-| 1 | 0.3984 |
-| 2 | 0.1915 |
-| 3 | 0.1413 |
-| 4 | 0.1134 |
-| 5 | 0.0949 |
- 
-## Results
- 
-**Test Accuracy: 96.67%**
- 
-The network's mistakes are concentrated on ambiguous handwriting — for example, a 9 written with sharp angles being mistaken for a 4, or a European-style 2 being mistaken for a 7. These are cases that would challenge human readers as well.
+| Epoch | CNN Loss |
+|-------|----------|
+| 1 | 0.1740 |
+| 2 | 0.0574 |
+| 3 | 0.0409 |
+| 5 | 0.0267 |
+| 10 | 0.0124 |
  
 ## Tech Stack
  
 - Python
-- PyTorch
-- torchvision
+- PyTorch, torchvision
+- Streamlit
+- streamlit-drawable-canvas
 - matplotlib
-## How to Run
+## How to Run Locally
  
 1. Clone the repo
 2. Install dependencies:
    ```
-   pip install torch torchvision matplotlib
+   pip install torch torchvision streamlit streamlit-drawable-canvas matplotlib
    ```
-3. Open `mnist.ipynb` in VS Code or Jupyter and run all cells
-4. The MNIST dataset downloads automatically on first run
-## Using the Saved Model
- 
-A pre-trained model is included (`mnist_model.pth`). To load and use it:
- 
-```python
-import torch
-model = NeuralNet()
-model.load_state_dict(torch.load('mnist_model.pth'))
-model.eval()
-```
- 
+3. Run the app:
+   ```
+   streamlit run app.py
+   ```
+4. Or open `mnist.ipynb` to see the full training process
 ## Project Structure
  
 ```
 mnist-neural-net/
-├── mnist.ipynb         # Main notebook
-├── mnist_model.pth     # Pre-trained model weights
-├── .gitignore          # Excludes data folder
+├── mnist.ipynb            # Training notebook
+├── app.py                 # Streamlit web app
+├── mnist_model.pth        # Saved feedforward model
+├── mnist_cnn_model.pth    # Saved CNN model
+├── .gitignore             # Excludes data folder
 └── README.md
 ```
+ 
